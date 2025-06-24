@@ -1,0 +1,18 @@
+body {
+  margin: 0;
+  font-family: sans-serif;
+  text-align: center;
+}
+
+#map {
+  height: 90vh;
+  width: 100%;
+  margin: 0 auto;
+  border: 2px solid #444;
+  border-radius: 10px;
+}
+.contenedor {
+  display: flex;
+  flex-direction: row; /* 👈 asegura que estén uno al lado del otro */
+  height: 100vh;
+  }

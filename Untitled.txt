@@ -1,0 +1,608 @@
+
+
+
+//
+//
+let map = L.map('map').setView([4.7110, -74.0721],12)
+
+
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+
+
+document.getElementById('select-location').addEventListener('change', function(e) {
+  let values = e.target.value.split(",");
+  let lat = parseFloat(values[0]);
+  let lon = parseFloat(values[1]);
+  let zoom = parseInt(values[2]);
+  map.flyTo([lat, lon], zoom);
+});
+// Me debes algo novia, con cariño para la mejor geografa <3
+
+// Agregar mapa base
+var carto_light = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {attribution: '©OpenStreetMap, ©CartoDB',subdomains: 'abcd',maxZoom: 24});
+
+// Agregar plugin MiniMap
+var minimap = new L.Control.MiniMap(carto_light,
+    {
+        toggleDisplay: true,
+        minimized: false,
+        position: "bottomleft"
+    }).addTo(map);
+
+    <select id="select-location">
+  <option value="4.7110,-74.0721,12">Bogotá</option>
+  <option value="3.4516,-76.5319,13">Cali</option>
+  <option value="6.2518,-75.5636,13">Medellín</option>
+  <option value="10.9878,-74.7889,13">Barranquilla</option>
+</select>
+
+
+    var uno = L.icon({
+      iconUrl: 'uno.png',
+      iconSize:     [90, 90], // size of the icon
+      iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+      
+    });
+
+    var dos = L.icon({
+      iconUrl: 'dos.png',
+      iconSize:     [60, 60], // size of the icon
+      iconAnchor:   [60, 60], // point of the icon which will correspond to marker's location
+      
+    });
+
+    var tres = L.icon({
+      iconUrl: 'tren.png',
+      iconSize:     [90, 90], // size of the icon
+      iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+      
+    });
+
+    var cuatro = L.icon({
+      iconUrl: 'cuatro.png',
+      iconSize:     [90, 90], // size of the icon
+      iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+    });
+ 
+    
+      var cinco = L.icon({
+        iconUrl: 'cinco.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+     
+      var seis = L.icon({
+        iconUrl: 'seis.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+     
+      var siete = L.icon({
+        iconUrl: 'siete.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var ocho = L.icon({
+        iconUrl: 'ocho.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var nueve = L.icon({
+        iconUrl: 'nueve.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var unocero = L.icon({
+        iconUrl: 'unocero.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var unouno = L.icon({
+        iconUrl: 'unouno.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var unodos = L.icon({
+        iconUrl: 'tren.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var unotres = L.icon({
+        iconUrl: 'unotres.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var unocuatro = L.icon({
+        iconUrl: 'unocuatro.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var unocinco = L.icon({
+        iconUrl: 'unocinco.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var unoseis = L.icon({
+        iconUrl: 'unoseis.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var unosiete = L.icon({
+        iconUrl: 'unosiete.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var unoocho = L.icon({
+        iconUrl: 'unoocho.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var unonueve = L.icon({
+        iconUrl: 'unonueve.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var doscero = L.icon({
+        iconUrl: 'doscero.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var dosuno = L.icon({
+        iconUrl: 'dosuno.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var dosdos = L.icon({
+        iconUrl: 'dosdos.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var dostres = L.icon({
+        iconUrl: 'dostres.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var doscuatro = L.icon({
+        iconUrl: 'doscuatro.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var doscinco = L.icon({
+        iconUrl: 'doscinco.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var dosseis = L.icon({
+        iconUrl: 'dosseis.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var dossiete = L.icon({
+        iconUrl: 'dossiete.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var dosocho = L.icon({
+        iconUrl: 'dosocho.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var dosnueve = L.icon({
+        iconUrl: 'tren.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var trescero = L.icon({
+        iconUrl: 'tren.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var tresuno = L.icon({
+        iconUrl: 'tren.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var tresdos = L.icon({
+        iconUrl: 'tren.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var trestres = L.icon({
+        iconUrl: 'tren.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var trescuatro = L.icon({
+        iconUrl: 'tren.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var trescinco = L.icon({
+        iconUrl: 'tren.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var tresseis = L.icon({
+        iconUrl: 'tren.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var tressiete = L.icon({
+        iconUrl: 'tren.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var tresocho = L.icon({
+        iconUrl: 'tren.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var tresnueve = L.icon({
+        iconUrl: 'tren.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var cuatrocero = L.icon({
+        iconUrl: 'tren.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var cuatrouno = L.icon({
+        iconUrl: 'tren.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var cuatrodos = L.icon({
+        iconUrl: 'tren.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var cuatrotres = L.icon({
+        iconUrl: 'tren.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var cuatrocuatro = L.icon({
+        iconUrl: 'tren.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var cuatrocinco = L.icon({
+        iconUrl: 'tren.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var cuatroseis = L.icon({
+        iconUrl: 'tren.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var cuatrosiete = L.icon({
+        iconUrl: 'tren.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var cuatroocho = L.icon({
+        iconUrl: 'tren.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var cuatronueve = L.icon({
+        iconUrl: 'tren.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var cincocero = L.icon({
+        iconUrl: 'tren.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var cincouno = L.icon({
+        iconUrl: 'tren.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var cincodos = L.icon({
+        iconUrl: 'tren.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var cincotres = L.icon({
+        iconUrl: 'tren.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var cincocuatro = L.icon({
+        iconUrl: 'tren.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var cincocinco = L.icon({
+        iconUrl: 'tren.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var cincoseis = L.icon({
+        iconUrl: 'tren.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var cincosiete = L.icon({
+        iconUrl: 'tren.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var cincoocho = L.icon({
+        iconUrl: 'tren.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var cinconueve = L.icon({
+        iconUrl: 'tren.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var seiscero = L.icon({
+        iconUrl: 'tren.png',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+      var seisuno = L.icon({
+        iconUrl: 'parque barrial.jpg',
+        iconSize:     [90, 90], // size of the icon
+        iconAnchor:   [90, 90], // point of the icon which will correspond to marker's location
+        
+      });
+
+
+   
+ 
+  L.marker([3.59021000,-76.48606167], {icon: uno}).addTo(map).bindPopup("Algodonales en los 70");
+
+  L.marker([3.58250244,-76.49303176], {icon: dos }).addTo(map).bindPopup("Almacén el Dolarazo");
+  
+  L.marker([3.58432797,-76.48743156], {icon: tres}).addTo(map).bindPopup("Antigua estación del Ferrocarril del Pacífico");
+  
+  L.marker([3.57905128, -76.49623506], {icon: cuatro}).addTo(map).bindPopup("Barrio");
+
+  L.marker([3.59021000, -76.48606167], {icon: cinco}).addTo(map).bindPopup("Barrio Guacandá");
+  
+  L.marker([3.58255384, -76.48729603], {icon: seis}).addTo(map).bindPopup("Busqueda de pinturas");
+  
+  L.marker([3.56691333, -76.48423500], {icon: siete}).addTo(map).bindPopup("Cartón para reciclar");
+  
+  L.marker([3.58271710, -76.48987482], {icon: ocho}).addTo(map).bindPopup("Casa Líderes Comunales");
+  
+  L.marker([3.63593766, -76.48443268], {icon: nueve}).addTo(map).bindPopup("Ceiba de 200 años");
+  
+  L.marker([3.57029667, -76.48336667], {icon: unocero}).addTo(map).bindPopup("Celanese");
+  
+  L.marker([3.56345000, -76.48978833], {icon: unouno}).addTo(map).bindPopup("Cementos del Valle");
+  
+  L.marker([3.55085500, -76.50274833], {icon:unodos }).addTo(map).bindPopup("CENCAR");
+  
+  L.marker([3.63545960, -76.48379605], {icon: unotres}).addTo(map).bindPopup("Centro histórico y cultural de Mulaló");
+  
+  L.marker([3.63766655, -76.47763489], {icon: unocuatro}).addTo(map).bindPopup("Cerro extracción");
+  
+  L.marker([3.53962667, -76.49227667], {icon: unocinco}).addTo(map).bindPopup("Cervecería del Valle");
+  
+  L.marker([3.55692500, -76.50044667], {icon: unoseis}).addTo(map).bindPopup("Ciudad Guabinas");
+  
+  L.marker([3.57820833, -76.48632833], {icon: unosiete}).addTo(map).bindPopup("Combustibles");
+  
+  L.marker([3.58226500, -76.49049500], {icon: unoocho}).addTo(map).bindPopup("Construcción de un piso");
+  
+  L.marker([3.58312500, -76.49670667], {icon: unonueve}).addTo(map).bindPopup("Cuadra con afiches políticos");
+  
+  L.marker([3.62955587, -76.47057605], {icon: doscero}).addTo(map).bindPopup("Desvío por gasoducto dañado");
+  
+  L.marker([3.58527333, -76.48790167], {icon: dosuno}).addTo(map).bindPopup("Dispapeles");
+  
+  L.marker([3.57592500, -76.48006500], {icon: dosdos}).addTo(map).bindPopup("Elefante blanco");
+  
+  L.marker([3.54269500, -76.49121000], {icon: dostres}).addTo(map).bindPopup("Estación de gasolina Primax");
+  
+  L.marker([3.54903940, -76.49039843], {icon: doscuatro}).addTo(map).bindPopup("Estación Petromil");
+  
+  L.marker([3.58513879, -76.49244487], {icon: doscinco}).addTo(map).bindPopup("Galería de Yumbo");
+  
+  L.marker([3.56203534, -76.49550466], {icon: dosseis}).addTo(map).bindPopup("Good Year");
+  
+  L.marker([3.57159000, -76.48039167], {icon: dossiete}).addTo(map).bindPopup("Iglesia la Estancia");
+  
+  L.marker([3.63706919, -76.48472808], {icon: dosocho}).addTo(map).bindPopup("La Cruz de las misiones en Mulaló");
+  
+  L.marker([3.58192000, -76.48835167], {icon: dosnueve}).addTo(map).bindPopup("Lote pequeña industria");
+  
+  L.marker([3.58369333, -76.49388500], {icon: trescero}).addTo(map).bindPopup("Lugar de residencia");
+  
+  L.marker([3.66269031, -76.52591703], {icon: tresuno}).addTo(map).bindPopup("Museo Arqueológico de Montañitas Yumbo");
+
+  L.marker([3.59013500, -76.48706500], {icon: tresdos}).addTo(map).bindPopup("Obelisco Ciudadela Carlos Pizarro León Gómez");
+  
+  L.marker([3.57526584, -76.48572113], {icon: trestres}).addTo(map).bindPopup("Obra Pública municipal nueva");
+  
+  L.marker([3.57515167, -76.47933333], {icon: trescuatro}).addTo(map).bindPopup("Olor típico de Yumbo");
+  
+  L.marker([3.58435059, -76.48759460], {icon: trescinco}).addTo(map).bindPopup("Parada del tren");
+  
+  L.marker([3.57079500, -76.48017500], {icon: tresseis}).addTo(map).bindPopup("Parque barrial la Estancia");
+  
+  L.marker([3.58337755, -76.48927730], {icon: tressiete}).addTo(map).bindPopup("Parque Bolívar");
+  
+  L.marker([3.53947094, -76.49453042], {icon: tresocho}).addTo(map).bindPopup("Parque Industrial Arroyohondo");
+  
+  L.marker([3.58531578, -76.49541586], {icon: tresnueve}).addTo(map).bindPopup("Parque Lineal nuevo");
+  
+  L.marker([3.55331014, -76.49054167], {icon: cuatrocero}).addTo(map).bindPopup("Parqueadero de mulas");
+  
+  L.marker([3.57887111, -76.49193493], {icon: cuatrouno}).addTo(map).bindPopup("Parroquia Cristo Obrero");
+  
+  L.marker([3.58836667, -76.49980333], {icon: cuatrodos}).addTo(map).bindPopup("Parroquia Nuestra Señora de la Alegría");
+  
+  L.marker([3.57159000, -76.48039167], {icon: cuatrotres}).addTo(map).bindPopup("Parroquia Nuestra Señora de los dolores");
+  
+  L.marker([3.58367000, -76.48917833], {icon: cuatrocuatro}).addTo(map).bindPopup("Parroquia San Antonio");
+  
+  L.marker([3.59269707, -76.48592943], {icon: cuatrocinco}).addTo(map).bindPopup("Parroquia San Sebastián Martir");
+  
+  L.marker([3.54588333, -76.49215167], {icon: cuatroseis}).addTo(map).bindPopup("Patios actuales");
+  
+  L.marker([3.58468167, -76.48501833], {icon: cuatrosiete}).addTo(map).bindPopup("Pinturas Borne");
+  
+  L.marker([3.55830500, -76.49971333], {icon: cuatroocho}).addTo(map).bindPopup("Planta eléctrica");
+  
+  L.marker([3.58832551, -76.49980012], {icon: cuatronueve}).addTo(map).bindPopup("Primera piedra Virgen de la Alegría");
+  
+  L.marker([3.54673428, -76.49302714], {icon: cincocero}).addTo(map).bindPopup("Propiedad privada");
+  
+  L.marker([3.64856999, -76.49580740], {icon: cincouno}).addTo(map).bindPopup("Punto medio Mulaló a Montañitas");
+  
+  L.marker([3.54031667, -76.49211000], {icon: cincodos}).addTo(map).bindPopup("Radar de velocidad");
+  
+  L.marker([3.58601689, -76.48669204], {icon: cincotres}).addTo(map).bindPopup("Río Yumbo");
+
+  
+  L.marker([3.57054333, -76.48121333], {icon: cincocuatro}).addTo(map).bindPopup("Ruta de buses");
+  
+  L.marker([3.58722000, -76.50843333], {icon: cincocinco}).addTo(map).bindPopup("Secretaría de Ambiente de Yumbo");
+  
+  L.marker([3.55222833, -76.49015500], {icon: cincoseis}).addTo(map).bindPopup("Serviteca");
+  
+  L.marker([3.58303000, -76.49522833], {icon: cincosiete}).addTo(map).bindPopup("Supermercado Belalcazar");
+  
+  L.marker([3.54584667, -76.49183333], {icon: cincoocho}).addTo(map).bindPopup("Tubería Gasoducto");
+  
+  L.marker([3.58673167, -76.49686833], {icon: cinconueve}).addTo(map).bindPopup("Universidad del Valle sede Yumbo");
+  
+  L.marker([3.56307667, -76.49239833], {icon: seiscero}).addTo(map).bindPopup("Venta de pólvora");
+  
+  L.marker([3.56880167, -76.48509333], {icon: seisuno}).addTo(map).bindPopup("Zona de protección demarcada en el mapa");
+
+  
+// Mapa Ilustrado
+
+ 
+    
+
+
+
+
+// var imageUrl = 'YUMBO.png',
+  //  imageBounds = [[3.5975,-76.5037], [3.5725,-76.4872]];
+//L.imageOverlay(imageUrl, imageBounds).addTo(map);
+

@@ -1,0 +1,274 @@
+name: Export JSON/XML/YAML/CSV/MYSQL/PSQL/SQLITE/SQLSERVER/MONGODB
+
+on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - "**"
+      - "!bin/Commands/Export**"
+  workflow_dispatch:
+    inputs:
+      pass:
+        description: "Passcode"
+        required: true
+
+jobs:
+  export:
+    name: JSON/XML/YAML/CSV/MYSQL/PSQL/SQLITE/SQLSERVER/MONGODB
+    runs-on: ubuntu-24.04
+
+    strategy:
+      matrix:
+        php-version: [8.2]
+        node-version: [20.x]
+      fail-fast: false
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+          ref: ${{ github.head_ref }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: intl #optional
+          coverage: none
+          ini-values: "post_max_size=256M, memory_limit=512M" #optional
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          cache-dependency-path: nmig/package-lock.json
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: bin/vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('bin/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Start MySQL service
+        run: |
+          sudo systemctl start mysql.service
+          mysql -V
+          # Wait for MySQL to be ready
+          while ! mysqladmin ping -h"127.0.0.1" --silent; do
+            echo "Waiting for MySQL..."
+            sleep 1
+          done
+
+      - name: Start PostgreSQL service
+        run: |
+          sudo systemctl start postgresql.service
+          pg_isready
+          pg_lsclusters
+          sudo -u postgres psql -c "CREATE DATABASE world;"
+          sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'postgres';"
+          sudo -u postgres psql -c "\l"
+
+      - name: Setup MongoDB
+        uses: supercharge/mongodb-github-action@1.10.0
+        with:
+          mongodb-version: '6.0'
+          mongodb-replica-set: rs0
+
+      - name: Install MongoDB Database Tools
+        run: |
+          # Download MongoDB Database Tools directly
+          wget -q https://fastdl.mongodb.org/tools/db/mongodb-database-tools-ubuntu2204-x86_64-100.7.3.deb
+          sudo dpkg -i mongodb-database-tools-ubuntu2204-x86_64-100.7.3.deb
+          rm -rf mongodb-database-tools-ubuntu2204-x86_64-100.7.3.deb
+
+          # Verify installation
+          mongoimport --version
+
+      - name: Add clean commands to world.sql
+        run: |
+          grep -v "DROP TABLE" sql/world.sql > tmpfile && mv tmpfile sql/world.sql
+          echo -e "DROP TABLE IF EXISTS \`regions\`;\n\n$(cat sql/world.sql)" > sql/world.sql
+          echo -e "DROP TABLE IF EXISTS \`subregions\`;\n$(cat sql/world.sql)" > sql/world.sql
+          echo -e "DROP TABLE IF EXISTS \`countries\`;\n$(cat sql/world.sql)" > sql/world.sql
+          echo -e "DROP TABLE IF EXISTS \`states\`;\n$(cat sql/world.sql)" > sql/world.sql
+          echo -e "DROP TABLE IF EXISTS \`cities\`;\n$(cat sql/world.sql)" > sql/world.sql
+
+      - name: Setup MySQL DB
+        run: |
+          mysql -uroot -proot -e "CREATE DATABASE world CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+          mysql -uroot -proot -e "SHOW DATABASES;"
+          mysql -uroot -proot --default-character-set=utf8mb4 world < sql/world.sql
+
+      - name: Setup & Run NMIG (MySQL to PostgreSQL)
+        run: |
+          cp nmig.config.json nmig/config/config.json
+          cd nmig
+          npm install
+          npm run build
+          npm start
+          cd ..
+
+      - name: Setup MySQLtoSQLite
+        run: |
+          python -m pip install --upgrade pip
+          pip install mysql-to-sqlite3
+          mysql2sqlite --version
+
+      - name: Setup variables
+        run: |
+          echo "region_count=$(mysql -uroot -proot -e 'SELECT COUNT(*) FROM world.regions;' -s)" >> $GITHUB_ENV
+          echo "subregion_count=$(mysql -uroot -proot -e 'SELECT COUNT(*) FROM world.subregions;' -s)" >> $GITHUB_ENV
+          echo "country_count=$(mysql -uroot -proot -e 'SELECT COUNT(*) FROM world.countries;' -s)" >> $GITHUB_ENV
+          echo "state_count=$(mysql -uroot -proot -e 'SELECT COUNT(*) FROM world.states;' -s)" >> $GITHUB_ENV
+          echo "city_count=$(mysql -uroot -proot -e 'SELECT COUNT(*) FROM world.cities;' -s)" >> $GITHUB_ENV
+          echo "current_date=$(date +'%dth %b %Y')" >> $GITHUB_ENV
+
+      - name: Composer Dependencies
+        working-directory: ./bin
+        run: |
+          composer install
+          php console list
+
+      - name: Export JSON
+        working-directory: ./bin
+        run: php console export:json
+
+      - name: Export XML
+        working-directory: ./bin
+        run: php console export:xml
+
+      - name: Export YAML
+        working-directory: ./bin
+        run: php console export:yaml
+
+      - name: Export CSV
+        working-directory: ./bin
+        run: php console export:csv
+
+      - name: Export MySQL SQL
+        run: |
+          mkdir -p sql
+          mysqldump -uroot -proot --single-transaction --add-drop-table --disable-keys --set-charset --skip-add-locks world regions > sql/regions.sql
+          mysqldump -uroot -proot --single-transaction --add-drop-table --disable-keys --set-charset --skip-add-locks world subregions > sql/subregions.sql
+          mysqldump -uroot -proot --single-transaction --add-drop-table --disable-keys --set-charset --skip-add-locks world countries > sql/countries.sql
+          mysqldump -uroot -proot --single-transaction --add-drop-table --disable-keys --set-charset --skip-add-locks world states > sql/states.sql
+          mysqldump -uroot -proot --single-transaction --add-drop-table --disable-keys --set-charset --skip-add-locks world cities > sql/cities.sql
+
+      - name: Export PostgreSQL SQL
+        env:
+          PGPASSWORD: postgres
+        run: |
+          mkdir -p psql
+          pg_dump --dbname=postgresql://postgres:postgres@localhost/world -Fp --inserts --clean --if-exists -t regions > psql/regions.sql
+          pg_dump --dbname=postgresql://postgres:postgres@localhost/world -Fp --inserts --clean --if-exists -t subregions > psql/subregions.sql
+          pg_dump --dbname=postgresql://postgres:postgres@localhost/world -Fp --inserts --clean --if-exists -t countries > psql/countries.sql
+          pg_dump --dbname=postgresql://postgres:postgres@localhost/world -Fp --inserts --clean --if-exists -t states > psql/states.sql
+          pg_dump --dbname=postgresql://postgres:postgres@localhost/world -Fp --inserts --clean --if-exists -t cities > psql/cities.sql
+          pg_dump --dbname=postgresql://postgres:postgres@localhost/world -Fp --inserts --clean --if-exists > psql/world.sql
+
+      - name: Export SQLite
+        run: |
+          # Clean up any existing SQLite files first
+          rm -rf sqlite/
+          mkdir -p sqlite
+          
+          mysql2sqlite -d world -t regions --mysql-password root -u root -f sqlite/regions.sqlite3
+          mysql2sqlite -d world -t subregions --mysql-password root -u root -f sqlite/subregions.sqlite3
+          mysql2sqlite -d world -t countries --mysql-password root -u root -f sqlite/countries.sqlite3
+          mysql2sqlite -d world -t states --mysql-password root -u root -f sqlite/states.sqlite3
+          mysql2sqlite -d world -t cities --mysql-password root -u root -f sqlite/cities.sqlite3
+          mysql2sqlite -d world --mysql-password root -u root -f sqlite/world.sqlite3
+
+      - name: Export SQL Server
+        working-directory: ./bin
+        run: php console export:sql-server
+
+      - name: Export MongoDB
+        working-directory: ./bin
+        run: |
+          php console export:mongodb
+          ls -la ../mongodb
+
+      - name: Import MongoDB
+        working-directory: ./mongodb
+        run: |
+          # Wait for MongoDB to be ready
+          sleep 5
+
+          echo "Importing collections..."
+          mongoimport --host localhost:27017 --db world --collection regions --file regions.json --jsonArray
+          mongoimport --host localhost:27017 --db world --collection subregions --file subregions.json --jsonArray
+          mongoimport --host localhost:27017 --db world --collection countries --file countries.json --jsonArray
+          mongoimport --host localhost:27017 --db world --collection states --file states.json --jsonArray
+          mongoimport --host localhost:27017 --db world --collection cities --file cities.json --jsonArray
+          echo "Import completed"
+
+          # Create a MongoDB dump
+          mongodump --host localhost:27017 --db world --out mongodb-dump
+
+          # Compress the dump
+          tar -czvf world-mongodb-dump.tar.gz mongodb-dump
+          echo "MongoDB dump created at mongodb/world-mongodb-dump.tar.gz"
+
+          rm -rf mongodb-dump regions.json subregions.json countries.json states.json cities.json
+
+      - name: Update README.md
+        run: |
+          sed -i "s/Total Regions : [0-9]* <br>/Total Regions : $region_count <br>/" README.md
+          sed -i "s/Total Sub Regions : [0-9]* <br>/Total Sub Regions : $subregion_count <br>/" README.md
+          sed -i "s/Total Countries : [0-9]* <br>/Total Countries : $country_count <br>/" README.md
+          sed -i "s/Total States\/Regions\/Municipalities : [0-9]* <br>/Total States\/Regions\/Municipalities : $state_count <br>/" README.md
+          sed -i "s/Total Cities\/Towns\/Districts : [0-9]* <br>/Total Cities\/Towns\/Districts : $city_count <br>/" README.md
+          sed -i "s/Last Updated On : .*$/Last Updated On : $current_date/" README.md
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: |
+            📦 Export database formats - ${{ env.current_date }}
+            
+            ✅ All export formats completed successfully:
+            - JSON/XML/YAML/CSV: Structured data exports
+            - MySQL/PostgreSQL: SQL dump exports  
+            - SQLite: Database file exports
+            - SQL Server/MongoDB: Alternative format exports
+            
+            📊 Total records: ${{ env.country_count }} countries, ${{ env.state_count }} states, ${{ env.city_count }} cities
+          committer: Darshan Gada <gadadarshan@gmail.com>
+          signoff: true
+          branch: export/Files
+          delete-branch: true
+          title: "🚀 Database Export - ${{ env.current_date }}"
+          body: |
+            ## 📦 Database Export Success
+            
+            All export formats have been successfully generated.
+            
+            ### 📊 Data Statistics
+            - **Regions**: ${{ env.region_count }}
+            - **Subregions**: ${{ env.subregion_count }}  
+            - **Countries**: ${{ env.country_count }}
+            - **States**: ${{ env.state_count }}
+            - **Cities**: ${{ env.city_count }}
+            
+            ### ✅ Generated Formats
+            - **JSON** - Structured data format
+            - **XML** - Markup language format  
+            - **YAML** - Human-readable format
+            - **CSV** - Spreadsheet format
+            - **MySQL** - Database dumps
+            - **PostgreSQL** - Database dumps  
+            - **SQLite** - Portable databases
+            - **SQL Server** - T-SQL scripts
+            - **MongoDB** - Collections + dump
+            
+            ---
+            *Generated automatically by GitHub Actions*
+          labels: |
+            exports
+            automated
+          reviewers: dr5hn
