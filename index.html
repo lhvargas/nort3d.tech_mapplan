@@ -6,8 +6,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Route map</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+<h1 class="titulo-principal">Un mismo camino, muchas rutas</h1>  
+<link rel="stylesheet" href="style.css" />
 
 <style>
+      #loginModal {
+      position: fixed;
+      top: 30%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      display: none;
+      z-index: 1000;
+    }
+    #overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      z-index: 999;
+    }
+
  * {
       box-sizing: border-box;
     }
@@ -18,6 +41,20 @@
       height: 100%;
       font-family: sans-serif;
     }
+
+   <button id="abrirLogin" style="
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  z-index: 1001;
+  padding: 8px 15px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+
+
  /* Contenedor principal horizontal */
     .contenedor {
       display: flex;
@@ -66,10 +103,21 @@
 
 <body>
 
-<h1>Un sólo camino, muchas rutas</h1>  
 <!-- 🌍 Estructura: los selects y el mapa -->
 
  <div class="contenedor">
+
+  <div id="overlay"></div>
+  <div id="loginModal">
+    <h2>Iniciar sesión</h2>
+    <input type="email" id="correo" placeholder="Correo" /><br /><br />
+    <input type="password" id="contraseña" placeholder="Contraseña" /><br /><br />
+    <button onclick="login()">Ingresar</button>
+    <p id="mensaje"></p>
+  </div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="./src/script.js"></script>
 
   <!-- Panel lateral de filtros -->
 
@@ -311,6 +359,97 @@ fetch("data_world.json")
     console.error("Error al cargar data_world.json:", error);
   });
 </script>
+
+<footer class="footer">
+  <p>© 2025 Laura Vargas | Proyecto nort3d.tech</p>
+</footer>
+
+<!-- Botón en la esquina superior derecha -->
+<button id="abrirLogin" style="
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  z-index: 1001;
+  padding: 8px 15px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+">
+  Iniciar sesión
+</button>
+
+<!-- Modal de login -->
+<div id="overlay"></div>
+<div id="loginModal" style="display:none; position: fixed; top: 30%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.3); z-index: 1000;">
+  <h2>Iniciar sesión</h2>
+  <input type="email" id="correo" placeholder="Correo" /><br /><br />
+  <input type="password" id="contraseña" placeholder="Contraseña" /><br /><br />
+  <button onclick="login()">Ingresar</button>
+  <p id="mensaje"></p>
+  <p>¿No tienes cuenta? <a href="#" id="mostrarRegistro">Regístrate</a></p>
+</div>
+
+<script>
+  // Mostrar modal al hacer clic en el botón
+  document.getElementById("abrirLogin").addEventListener("click", () => {
+    document.getElementById("overlay").style.display = "block";
+    document.getElementById("loginModal").style.display = "block";
+  });
+
+  function login() {
+    const correo = document.getElementById("correo").value;
+    const contraseña = document.getElementById("contraseña").value;
+
+    fetch("http://localhost:5000/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ correo, contraseña }),
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.token) {
+        document.getElementById("mensaje").textContent = "✔️ Login exitoso";
+        document.getElementById("loginModal").style.display = "none";
+        document.getElementById("overlay").style.display = "none";
+        localStorage.setItem("token", data.token);
+      } else {
+        document.getElementById("mensaje").textContent = "❌ " + data.mensaje;
+      }
+    })
+    .catch(err => {
+      console.error("Error:", err);
+      document.getElementById("mensaje").textContent = "❌ Error de conexión";
+    });
+  }
+
+  // (Este esqueleto sirve para enlazar el modal de registro si lo haces luego)
+  document.getElementById("mostrarRegistro").addEventListener("click", (e) => {
+    e.preventDefault();
+    alert("Aquí se abriría el formulario de registro"); // Aquí luego puedes mostrar otro modal
+  });
+</script>
+<script>
+  fetch("data_world.json")
+  .then(res => res.json())
+  .then(json => {
+    data = json;
+    paisSelect.innerHTML = '<option value="">Selecciona un país</option>';
+    data.forEach(pais => {
+      const option = document.createElement("option");
+      option.value = pais.id;
+      option.textContent = pais.name;
+      paisSelect.appendChild(option);
+    });
+  })
+  .catch(error => {
+    console.error("Error al cargar data_world.json:", error);
+  });
+
+  
+  
+  </script>
 
 </body>
 </html>
