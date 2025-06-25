@@ -43,3 +43,34 @@ body {
   bottom: 0;
   width: 100%;
 }
+
+/* Contenedor navbar */
+.navbar {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 1100; /* ✅ Encima del mapa */
+  display: flex;
+  gap: 10px;
+  background-color: rgba(255, 255, 255, 0.8); /* Fondo suave */
+  padding: 10px 15px;
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+/* Estilo de los enlaces */
+.navbar a {
+  display: block;
+  padding: 10px 15px;
+  color: black;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 12px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Al pasar el mouse */
+.navbar a:hover {
+  background-color: #333;
+  color: white;
+}
