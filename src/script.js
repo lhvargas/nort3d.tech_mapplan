@@ -1,3 +1,4 @@
+let data = [];
 // TODO TU SCRIPT AQUÍ ADENTRO
 document.addEventListener("DOMContentLoaded", () => {
   
@@ -9,12 +10,14 @@ const deptSelect = document.getElementById("departamento");
 const ciudadSelect = document.getElementById("ciudad");
 const botonBuscar = document.getElementById("buscarUbicacion");
 
+
 // Crear el mapa centrado en Bogotá
 const map = L.map('route_map').setView([4.6477, -74.0842], 12);
 
 L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
   attribution: '&copy; <a href="https://carto.com/">CARTO</a> | OpenStreetMap contributors'
 }).addTo(map);
+
 
 
 // Añadir marcadores
@@ -39,15 +42,12 @@ const polyline = L.polyline(ruta, {
 
 map.fitBounds(polyline.getBounds());
 
-
-// Variable global para almacenar datos
-let data = [];
-
 // Cargar datos JSON
 fetch("data_world.json")
   .then(res => res.json())
   .then(json => {
     data = json;
+    console.log("✅ Datos cargados:", data);
     paisSelect.innerHTML = '<option value="">Selecciona un país</option>';
     data.forEach(pais => {
       const option = document.createElement("option");
@@ -56,6 +56,7 @@ fetch("data_world.json")
       paisSelect.appendChild(option);
     });
   })
+  
   .catch(error => {
     console.error("Error al cargar data_world.json:", error);
   });
@@ -94,28 +95,39 @@ paisSelect.addEventListener("change", () => {
 deptSelect.addEventListener("change", () => {
   const paisId = parseInt(paisSelect.value);
   const deptId = parseInt(deptSelect.value);
-  const pais = data.find(p => p.id === paisId);
-  const estado = pais?.states.find(s => s.id === deptId);
 
+  const pais = data.find(p => p.id === paisId);
+  if (!pais || !pais.states) return;
+
+  const estado = pais.states.find(s => s.id === deptId);
   ciudadSelect.innerHTML = '<option value="">Selecciona una ciudad</option>';
 
-  if (estado && estado.cities) {
+  if (estado && Array.isArray(estado.cities)) {
     estado.cities.forEach(ciudad => {
+      console.log("Ciudades cargadas:", estado.cities);
       const option = document.createElement("option");
       option.value = ciudad.id;
       option.textContent = ciudad.name;
       ciudadSelect.appendChild(option);
     });
+  } else {
+    console.warn("⚠️ No se encontraron ciudades para este departamento.");
   }
 });
+
 
 // Buscar ciudad
 botonBuscar.addEventListener("click", () => {
   const paisId = parseInt(paisSelect.value);
   const deptId = parseInt(deptSelect.value);
   const ciudadId = parseInt(ciudadSelect.value);
+
+ // Buscar el país
   const pais = data.find(p => p.id === paisId);
-  if (!pais || !pais.states) return;
+  if (!pais || !pais.states) {
+    alert("No se encontró el país.");
+    return;
+  }
 
   let ciudad = null;
 
@@ -123,6 +135,7 @@ botonBuscar.addEventListener("click", () => {
     const dept = pais.states.find(d => d.id === deptId);
     ciudad = dept?.cities.find(c => c.id === ciudadId);
   } else {
+    // Buscar la ciudad sin importar el departamento
     for (const dept of pais.states) {
       ciudad = dept.cities?.find(c => c.id === ciudadId);
       if (ciudad) break;
@@ -136,6 +149,7 @@ botonBuscar.addEventListener("click", () => {
 
   const lat = parseFloat(ciudad.latitude);
   const lon = parseFloat(ciudad.longitude);
+
   if (!isNaN(lat) && !isNaN(lon)) {
     map.setView([lat, lon], 13);
     L.popup()
@@ -146,6 +160,7 @@ botonBuscar.addEventListener("click", () => {
     alert("La ciudad seleccionada no tiene coordenadas válidas.");
   }
 });
+
 
 // ====================== LOGIN =========================
 
@@ -190,6 +205,5 @@ function cerrarModal() {
   document.getElementById("overlay").style.display = "none";
   document.getElementById("loginModal").style.display = "none";
 }
-
 
 });

@@ -137,19 +137,6 @@
   <div class="contenedor">
 <!-- 🔲 Fondo oscuro que aparece cuando se muestra el modal -->
   <div id="overlay"></div>
-<!-- 🔐 Modal de inicio de sesión -->
-  <div id="loginModal">
-  <!-- Título del modal -->
-    <h2>Iniciar sesión</h2>
-  <!-- Campo para que el usuario ingrese su correo -->
-    <input type="email" id="correo" placeholder="Correo" /><br /><br />
-  <!-- Campo para que el usuario ingrese su contraseña -->
-    <input type="password" id="contraseña" placeholder="Contraseña" /><br /><br />
-  <!-- Botón para ejecutar la función 'login()' al hacer clic --> 
-    <button onclick="login()">Ingresar</button>
-  <!-- Área donde se mostrará un mensaje (éxito/error de login) -->
-    <p id="mensaje"></p>
-  </div>
 
 <!-- 📌 Panel lateral con los filtros para seleccionar ubicación -->
   <aside class="filtros">
@@ -176,8 +163,7 @@
 
 <!-- 🗺️ Contenedor principal del mapa -->
     <main class="mapa">
-      <div id="route_map" style="height: 600px; width: 1000px;"></div>
-
+      <div id="route_map"></div>
     </main>
  </div> <!-- Fin del contenedor principal -->
 
