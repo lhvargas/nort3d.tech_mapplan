@@ -12,11 +12,9 @@ const botonBuscar = document.getElementById("buscarUbicacion");
 // Crear el mapa centrado en Bogotá
 const map = L.map('route_map').setView([4.6477, -74.0842], 12);
 
-// Cargar mapa base
 L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
   attribution: '&copy; <a href="https://carto.com/">CARTO</a> | OpenStreetMap contributors'
 }).addTo(map);
-
 
 
 // Añadir marcadores
@@ -30,14 +28,17 @@ const ruta = [
   [4.60417, -74.09042],
   [4.61648, -74.11952]
 ];
-L.polyline(ruta, {
-  color: '#FF6B6B',
+const polyline = L.polyline(ruta, {
+  color: '#FF5733',
   weight: 5,
   opacity: 0.9,
-  dashArray: '10,10',        // líneas punteadas
-  lineCap: 'round',           // extremos redondeados
-  smoothFactor: 1.5
+  dashArray: '8, 12', // 🔹 Línea punteada
+  lineJoin: 'round',
+  className: 'ruta-estetica'
 }).addTo(map);
+
+map.fitBounds(polyline.getBounds());
+
 
 // Variable global para almacenar datos
 let data = [];

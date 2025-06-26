@@ -74,3 +74,7 @@ body {
   background-color: #333;
   color: white;
 }
+.leaflet-interactive.ruta-estetica {
+  stroke-linecap: round;
+  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.5));
+}
