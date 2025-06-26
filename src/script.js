@@ -96,19 +96,36 @@ deptSelect.addEventListener("change", () => {
   const paisId = parseInt(paisSelect.value);
   const deptId = parseInt(deptSelect.value);
   const pais = data.find(p => p.id === paisId);
-  const estado = pais?.states.find(s => s.id === deptId);
+  
+  // ✅ Verificación por seguridad
+  if (!pais) {
+    console.warn("❌ País no encontrado.");
+    return;
+  }
+
+  const estado = pais.states.find(s => s.id === deptId);
+  console.log("🔁 Departamento seleccionado:", deptId);
+  console.log("📂 País seleccionado:", pais);
+  console.log("📂 Estado (departamento) encontrado:", estado);
 
   ciudadSelect.innerHTML = '<option value="">Selecciona una ciudad</option>';
 
   if (estado && Array.isArray(estado.cities)) {
+    console.log("🏙️ Ciudades encontradas:", estado.cities);
+
     estado.cities.forEach(ciudad => {
       const option = document.createElement("option");
       option.value = ciudad.id;
       option.textContent = ciudad.name;
       ciudadSelect.appendChild(option);
     });
+  } else {
+    console.warn("⚠️ Este departamento no tiene ciudades registradas.");
   }
 });
+
+
+
 
 
 // Buscar ciudad
@@ -154,6 +171,11 @@ botonBuscar.addEventListener("click", () => {
   } else {
     alert("La ciudad seleccionada no tiene coordenadas válidas.");
   }
+
+  botonBuscar.addEventListener("click", () => {
+  console.log("✅ Se hizo clic en el botón buscar");
+});
+
 });
 
 
@@ -195,10 +217,27 @@ function login() {
     });
 }
 
-// Cerrar modal
+// Cerrar función cerrarModal
 function cerrarModal() {
   document.getElementById("overlay").style.display = "none";
   document.getElementById("loginModal").style.display = "none";
 }
+
+// Cierre de document.addEventListener("DOMContentLoaded", ...)
+
+document.addEventListener("DOMContentLoaded", () => {
+  // ... otras variables ...
+
+  const botonBuscar = document.getElementById("buscarUbicacion");
+
+  // ⬇️ Agrega esto justo después
+  botonBuscar.addEventListener("click", () => {
+    console.log("🟢 Se hizo clic en el botón buscar");
+    // Aquí va tu lógica para buscar la ciudad
+  });
+
+  // ... aquí viene el código para crear el mapa, cargar datos, etc ...
+});
+
 
 });
