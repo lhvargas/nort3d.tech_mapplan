@@ -13,9 +13,11 @@ const botonBuscar = document.getElementById("buscarUbicacion");
 const map = L.map('route_map').setView([4.6477, -74.0842], 12);
 
 // Cargar mapa base
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  attribution: '&copy; OpenStreetMap contributors'
+L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+  attribution: '&copy; <a href="https://carto.com/">CARTO</a> | OpenStreetMap contributors'
 }).addTo(map);
+
+
 
 // Añadir marcadores
 L.marker([4.68779, -74.16166]).addTo(map).bindPopup("Point 1").openPopup();
@@ -29,10 +31,12 @@ const ruta = [
   [4.61648, -74.11952]
 ];
 L.polyline(ruta, {
-  color: 'blue',
-  weight: 4,
-  opacity: 0.7,
-  smoothFactor: 1
+  color: '#FF6B6B',
+  weight: 5,
+  opacity: 0.9,
+  dashArray: '10,10',        // líneas punteadas
+  lineCap: 'round',           // extremos redondeados
+  smoothFactor: 1.5
 }).addTo(map);
 
 // Variable global para almacenar datos
@@ -185,5 +189,6 @@ function cerrarModal() {
   document.getElementById("overlay").style.display = "none";
   document.getElementById("loginModal").style.display = "none";
 }
+
 
 });
