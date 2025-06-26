@@ -78,3 +78,29 @@ body {
   stroke-linecap: round;
   filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.5));
 }
+
+@media (max-width: 768px) {
+.contenedor {
+  display: flex;
+  flex-direction: row;
+  height: auto;
+  width: 100%;
+}
+
+  .filtros {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #ddd;
+  }
+
+  #route_map {
+    width: 100% !important;
+    height: 400px;
+  }
+
+  .filtros select,
+  .filtros button {
+    width: 100%;
+  }
+}
+

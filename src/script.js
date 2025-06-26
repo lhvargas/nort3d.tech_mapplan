@@ -95,23 +95,18 @@ paisSelect.addEventListener("change", () => {
 deptSelect.addEventListener("change", () => {
   const paisId = parseInt(paisSelect.value);
   const deptId = parseInt(deptSelect.value);
-
   const pais = data.find(p => p.id === paisId);
-  if (!pais || !pais.states) return;
+  const estado = pais?.states.find(s => s.id === deptId);
 
-  const estado = pais.states.find(s => s.id === deptId);
   ciudadSelect.innerHTML = '<option value="">Selecciona una ciudad</option>';
 
   if (estado && Array.isArray(estado.cities)) {
     estado.cities.forEach(ciudad => {
-      console.log("Ciudades cargadas:", estado.cities);
       const option = document.createElement("option");
       option.value = ciudad.id;
       option.textContent = ciudad.name;
       ciudadSelect.appendChild(option);
     });
-  } else {
-    console.warn("⚠️ No se encontraron ciudades para este departamento.");
   }
 });
 
